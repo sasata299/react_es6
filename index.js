@@ -9,7 +9,29 @@ class CommentBox extends React.Component {
   render() {
     return(
       <div className='commentBox'>
-        Hello, world!
+        <h2>Comments</h2>
+        <CommentList />
+        <CommentFrom />
+      </div>
+    );
+  }
+}
+
+class CommentList extends React.Component {
+  render() {
+    return(
+      <div className='commentList'>
+        Hello world! I am a CommentList.
+      </div>
+    );
+  }
+}
+
+class CommentFrom extends React.Component {
+  render() {
+    return(
+      <div className='commentFrom'>
+        Hello world! I am a CommentFrom.
       </div>
     );
   }
