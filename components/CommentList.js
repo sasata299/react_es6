@@ -3,11 +3,13 @@ import Comment from './Comment'
 
 export default class CommentList extends React.Component {
   render() {
+    var commentNodes = this.props.data.map((comment)=> {
+      return(
+        <Comment author={comment.author}>{comment.text}</Comment>
+      );
+    });
     return(
-      <div className='commentList'>
-        <Comment author='Pete Hunt'>This is one comment.</Comment>
-        <Comment author='Jorden Walke'>This is *anothor* comment.</Comment>
-      </div>
+      <div className='commentList'>{commentNodes}</div>
     );
   }
 }
