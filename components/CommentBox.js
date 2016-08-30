@@ -1,6 +1,6 @@
 import React from 'react'
 import CommentList from './CommentList'
-import CommentFrom from './CommentFrom'
+import CommentForm from './CommentForm'
 import $ from 'jquery'
 
 export default class CommentBox extends React.Component {
@@ -23,6 +23,19 @@ export default class CommentBox extends React.Component {
     });
   }
 
+  handleCommentSubmit(comment) {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      type: 'POST',
+      data: comment,
+      success: (data) => { this.setState({data: data}); },
+      error: (xhr, status, err) => {
+        console.error(this.props.url, status, err.toString());
+      }
+    });
+  }
+
   componentDidMount() {
     this.loadCommentsFromServer();
     setInterval(this.loadCommentsFromServer.bind(this), this.props.pollInterval);
@@ -33,7 +46,7 @@ export default class CommentBox extends React.Component {
       <div className='commentBox'>
         <h2>Comments</h2>
         <CommentList data={this.state.data} />
-        <CommentFrom />
+        <CommentForm onCommentSubmit={this.handleCommentSubmit.bind(this)} />
       </div>
     );
   }
