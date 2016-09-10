@@ -1,7 +1,7 @@
 import React from 'react'
 import CommentList from './CommentList'
 import CommentForm from './CommentForm'
-import $ from 'jquery'
+import request from 'superagent'
 
 export default class CommentBox extends React.Component {
   constructor(props) {
@@ -12,15 +12,15 @@ export default class CommentBox extends React.Component {
   }
 
   loadCommentsFromServer() {
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      cache: false,
-      success: (data) => { this.setState({data: data}); },
-      error: (xhr, status, err) => {
-        console.error(this.props.url, status, err.toString());
-      }
-    });
+    request
+      .get(this.props.url)
+      .end((err, res) => {
+        if (err) {
+          console.error(err);
+        } else {
+          this.setState({data: res.body});
+        }
+      });
   }
 
   handleCommentSubmit(comment) {
@@ -28,16 +28,16 @@ export default class CommentBox extends React.Component {
     var newComments = comments.concat([comment]);
     this.setState({data: newComments});
 
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      type: 'POST',
-      data: comment,
-      success: (data) => { this.setState({data: data}); },
-      error: (xhr, status, err) => {
-        console.error(this.props.url, status, err.toString());
-      }
-    });
+    request
+      .post(this.props.url)
+      .send(comment)
+      .end((err, res) => {
+        if (err) {
+          console.error(err);
+        } else {
+          this.setState({data: res.body});
+        }
+      });
   }
 
   componentDidMount() {
