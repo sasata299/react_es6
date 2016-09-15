@@ -1,9 +1,10 @@
 import React from 'react'
+import { observer } from 'mobx-react'
 import CommentList from './CommentList'
 import CommentForm from './CommentForm'
 import request from 'superagent'
 
-export default class CommentBox extends React.Component {
+class CommentBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,10 +50,13 @@ export default class CommentBox extends React.Component {
     return(
       <div className='commentBox'>
         <h2>Comments</h2>
+        <div>{this.props.data.timer}</div>
         <CommentList data={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit.bind(this)} />
       </div>
     );
   }
 }
+
+module.exports = observer(CommentBox);
 
